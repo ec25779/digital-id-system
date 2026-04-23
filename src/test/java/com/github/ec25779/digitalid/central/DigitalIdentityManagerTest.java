@@ -11,7 +11,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class DigitalIdentityManagerTest {
 
     private static final OrganizationId ORGANIZATION_ID = new OrganizationId("central-authority");
+    private static final Instant FIXED_NOW = Instant.parse("2026-04-23T00:00:00Z");
     private static final LocalDate TEST_DATE_OF_BIRTH = LocalDate.of(2000, 1, 1);
 
     private DigitalIdRepository repository;
@@ -33,8 +37,9 @@ public class DigitalIdentityManagerTest {
             .grant(ORGANIZATION_ID, Permission.CREATE_IDENTITY, Permission.UPDATE_IDENTITY)
             .build();
 
+        Clock clock = Clock.fixed(FIXED_NOW, ZoneOffset.UTC);
         identityManager = new AuthorizingIdentityManager(
-            new CoreIdentityManager(repository), permissionRegistry
+            new CoreIdentityManager(repository, clock), permissionRegistry
         );
     }
 
@@ -47,6 +52,7 @@ public class DigitalIdentityManagerTest {
         Optional<DigitalId> digitalId = repository.find(result.getId());
         assertTrue(digitalId.isPresent());
         assertEquals(digitalId.get(), result);
+        assertEquals(FIXED_NOW, result.getCreatedAt());
     }
 
     @Test

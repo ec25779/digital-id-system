@@ -7,6 +7,7 @@ import com.github.ec25779.digitalid.model.IdentityNotFoundException;
 import com.github.ec25779.digitalid.repository.DigitalIdRepository;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,14 +15,20 @@ import java.util.UUID;
 public class CoreIdentityManager implements DigitalIdentityManager {
 
     private final DigitalIdRepository repository;
+    private final Clock clock;
+
+    public CoreIdentityManager(@NotNull DigitalIdRepository repository, @NotNull Clock clock) {
+        this.repository = repository;
+        this.clock = clock;
+    }
 
     public CoreIdentityManager(@NotNull DigitalIdRepository repository) {
-        this.repository = repository;
+        this(repository, Clock.systemUTC());
     }
 
     @Override
     public @NotNull DigitalId createIdentity(@NotNull OrganizationId caller, @NotNull CreateIdentityCommand command) {
-        DigitalId digitalId = new DigitalId(UUID.randomUUID(), Instant.now(), command.dateOfBirth(),
+        DigitalId digitalId = new DigitalId(UUID.randomUUID(), clock.instant(), command.dateOfBirth(),
             command.placeOfBirth(), command.biologicalSex(), command.fullName(), command.address(), DigitalIdStatus.ACTIVE);
         repository.save(digitalId);
 
