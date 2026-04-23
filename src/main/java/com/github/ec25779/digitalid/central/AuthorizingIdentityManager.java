@@ -23,4 +23,10 @@ public class AuthorizingIdentityManager implements DigitalIdentityManager {
         return delegate.createIdentity(caller, command);
     }
 
+    @Override
+    public @NotNull DigitalId updateIdentity(@NotNull OrganizationId caller, @NotNull UpdateIdentityCommand command) {
+        permissionRegistry.require(caller, Permission.UPDATE_IDENTITY);
+        return delegate.updateIdentity(caller, command);
+    }
+
 }
