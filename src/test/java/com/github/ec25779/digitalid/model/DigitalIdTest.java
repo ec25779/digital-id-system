@@ -1,9 +1,5 @@
-package com.github.ec25779.digitalid;
+package com.github.ec25779.digitalid.model;
 
-import com.github.ec25779.digitalid.model.BiologicalSex;
-import com.github.ec25779.digitalid.model.DigitalId;
-import com.github.ec25779.digitalid.model.DigitalIdStatus;
-import com.github.ec25779.digitalid.model.InvalidStateTransitionException;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
