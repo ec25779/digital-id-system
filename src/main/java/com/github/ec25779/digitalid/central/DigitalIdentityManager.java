@@ -8,4 +8,6 @@ public interface DigitalIdentityManager {
 
     @NotNull DigitalId createIdentity(@NotNull OrganizationId caller, @NotNull CreateIdentityCommand command);
 
+    @NotNull DigitalId updateIdentity(@NotNull OrganizationId caller, @NotNull UpdateIdentityCommand command);
+
 }
