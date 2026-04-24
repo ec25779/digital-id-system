@@ -5,6 +5,8 @@ import com.github.ec25779.digitalid.auth.OrganizationPermissionRegistry;
 import com.github.ec25779.digitalid.auth.Permission;
 import com.github.ec25779.digitalid.model.BiologicalSex;
 import com.github.ec25779.digitalid.model.DigitalId;
+import com.github.ec25779.digitalid.model.DigitalIdStatus;
+import com.github.ec25779.digitalid.model.InvalidStateTransitionException;
 import com.github.ec25779.digitalid.repository.DigitalIdRepository;
 import com.github.ec25779.digitalid.repository.VolatileDigitalIdRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -18,8 +20,7 @@ import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DigitalIdentityManagerTest {
 
@@ -93,6 +94,106 @@ public class DigitalIdentityManagerTest {
         DigitalId findResult = repository.find(id).orElseThrow();
         assertEquals(id, findResult.getId());
         assertEquals("456 Elm St", updateResult.getAddress());
+    }
+
+    @Test
+    public void testSuspendActiveIdentity() {
+        DigitalId createResult = identityManager.createIdentity(ORGANIZATION_ID,
+            new CreateIdentityCommand(TEST_DATE_OF_BIRTH, "London", BiologicalSex.MALE, "John Doe", "123 Main St")
+        );
+
+        UUID id = createResult.getId();
+
+        DigitalId suspendResult = identityManager.updateIdentity(ORGANIZATION_ID,
+            new UpdateIdentitySuspensionCommand(id, true)
+        );
+
+        assertEquals(id, suspendResult.getId());
+        assertEquals(DigitalIdStatus.SUSPENDED, suspendResult.getStatus());
+    }
+
+    @Test
+    public void testAlreadySuspendedIdentityThrows() {
+        DigitalId createResult = identityManager.createIdentity(ORGANIZATION_ID,
+            new CreateIdentityCommand(TEST_DATE_OF_BIRTH, "London", BiologicalSex.MALE, "John Doe", "123 Main St")
+        );
+
+        UUID id = createResult.getId();
+
+        identityManager.updateIdentity(ORGANIZATION_ID,
+            new UpdateIdentitySuspensionCommand(id, true)
+        );
+
+        assertThrows(InvalidStateTransitionException.class, () -> {
+            identityManager.updateIdentity(ORGANIZATION_ID,
+                new UpdateIdentitySuspensionCommand(id, true)
+            );
+        });
+    }
+
+    @Test
+    public void testActivateSuspendedIdentity() {
+        DigitalId createResult = identityManager.createIdentity(ORGANIZATION_ID,
+            new CreateIdentityCommand(TEST_DATE_OF_BIRTH, "London", BiologicalSex.MALE, "John Doe", "123 Main St")
+        );
+
+        UUID id = createResult.getId();
+
+        identityManager.updateIdentity(ORGANIZATION_ID,
+            new UpdateIdentitySuspensionCommand(id, true)
+        );
+
+        DigitalId activatedResult = identityManager.updateIdentity(ORGANIZATION_ID,
+            new UpdateIdentitySuspensionCommand(id, false)
+        );
+
+        assertEquals(id, activatedResult.getId());
+        assertEquals(DigitalIdStatus.ACTIVE, activatedResult.getStatus());
+    }
+
+
+    @Test
+    public void testRevokeActiveIdentity() {
+        DigitalId createResult = identityManager.createIdentity(ORGANIZATION_ID,
+            new CreateIdentityCommand(TEST_DATE_OF_BIRTH, "London", BiologicalSex.MALE, "John Doe", "123 Main St")
+        );
+
+        UUID id = createResult.getId();
+        DigitalId revokedResult = identityManager.revokeIdentity(ORGANIZATION_ID, new RevokeIdentityCommand(id));
+
+        assertEquals(id, revokedResult.getId());
+        assertEquals(DigitalIdStatus.REVOKED, revokedResult.getStatus());
+    }
+
+    @Test
+    public void testUpdateRevokedIdentityThrows() {
+        UUID id = identityManager.createIdentity(ORGANIZATION_ID,
+            new CreateIdentityCommand(TEST_DATE_OF_BIRTH, "London", BiologicalSex.MALE, "John Doe", "123 Main St")
+        ).getId();
+
+        DigitalId digitalId = identityManager.revokeIdentity(ORGANIZATION_ID,
+            new RevokeIdentityCommand(id)
+        );
+
+        assertThrows(InvalidStateTransitionException.class, () -> {
+            identityManager.updateIdentity(ORGANIZATION_ID, new UpdateIdentityFullNameCommand(id, "Jane Doe"));
+        });
+
+        assertThrows(InvalidStateTransitionException.class, () -> {
+            identityManager.updateIdentity(ORGANIZATION_ID, new UpdateIdentityAddressCommand(id, "456 Elm St"));
+        });
+
+        assertThrows(InvalidStateTransitionException.class, () -> {
+            identityManager.updateIdentity(ORGANIZATION_ID, new UpdateIdentitySuspensionCommand(id, true));
+        });
+
+        assertThrows(InvalidStateTransitionException.class, () -> {
+            identityManager.updateIdentity(ORGANIZATION_ID, new UpdateIdentitySuspensionCommand(id, false));
+        });
+
+        assertEquals(DigitalIdStatus.REVOKED, digitalId.getStatus());
+        assertEquals("John Doe", digitalId.getFullName());
+        assertEquals("123 Main St", digitalId.getAddress());
     }
 
     @AfterEach

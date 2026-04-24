@@ -10,4 +10,6 @@ public interface DigitalIdentityManager {
 
     @NotNull DigitalId updateIdentity(@NotNull OrganizationId caller, @NotNull UpdateIdentityCommand command);
 
+    @NotNull DigitalId revokeIdentity(@NotNull OrganizationId caller, @NotNull RevokeIdentityCommand command);
+
 }

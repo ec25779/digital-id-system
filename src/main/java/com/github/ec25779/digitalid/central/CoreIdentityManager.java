@@ -8,7 +8,6 @@ import com.github.ec25779.digitalid.repository.DigitalIdRepository;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Clock;
-import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -46,9 +45,31 @@ public class CoreIdentityManager implements DigitalIdentityManager {
         switch (command) {
             case UpdateIdentityFullNameCommand(UUID _, String fullName) -> digitalId.setFullName(fullName);
             case UpdateIdentityAddressCommand(UUID _, String address) -> digitalId.setAddress(address);
+            case UpdateIdentitySuspensionCommand(UUID _, boolean suspended) -> {
+                if (suspended) {
+                    digitalId.suspend();
+                } else {
+                    digitalId.activate();
+                }
+            }
         }
 
         repository.save(digitalId);
+
+        return digitalId;
+    }
+
+    @Override
+    public @NotNull DigitalId revokeIdentity(@NotNull OrganizationId caller, @NotNull RevokeIdentityCommand command) {
+        Optional<DigitalId> result = repository.find(command.id());
+        if (result.isEmpty()) {
+            throw new IdentityNotFoundException(command.id());
+        }
+
+        DigitalId digitalId = result.get();
+        digitalId.revoke();
+        repository.save(digitalId);
+
         return digitalId;
     }
 

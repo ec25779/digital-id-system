@@ -29,4 +29,10 @@ public class AuthorizingIdentityManager implements DigitalIdentityManager {
         return delegate.updateIdentity(caller, command);
     }
 
+    @Override
+    public @NotNull DigitalId revokeIdentity(@NotNull OrganizationId caller, @NotNull RevokeIdentityCommand command) {
+        permissionRegistry.require(caller, Permission.UPDATE_IDENTITY);
+        return delegate.revokeIdentity(caller, command);
+    }
+
 }
