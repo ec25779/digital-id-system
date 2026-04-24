@@ -31,7 +31,7 @@ public class AuthorizingIdentityManager implements DigitalIdentityManager {
 
     @Override
     public @NotNull DigitalId revokeIdentity(@NotNull OrganizationId caller, @NotNull RevokeIdentityCommand command) {
-        permissionRegistry.require(caller, Permission.UPDATE_IDENTITY);
+        permissionRegistry.require(caller, Permission.REVOKE_IDENTITY);
         return delegate.revokeIdentity(caller, command);
     }
 

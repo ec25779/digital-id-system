@@ -35,7 +35,7 @@ public class DigitalIdentityManagerTest {
     public void setUp() {
         repository = new VolatileDigitalIdRepository();
         OrganizationPermissionRegistry permissionRegistry = OrganizationPermissionRegistry.builder()
-            .grant(ORGANIZATION_ID, Permission.CREATE_IDENTITY, Permission.UPDATE_IDENTITY)
+            .grant(ORGANIZATION_ID, Permission.CREATE_IDENTITY, Permission.UPDATE_IDENTITY, Permission.REVOKE_IDENTITY)
             .build();
 
         Clock clock = Clock.fixed(FIXED_NOW, ZoneOffset.UTC);
