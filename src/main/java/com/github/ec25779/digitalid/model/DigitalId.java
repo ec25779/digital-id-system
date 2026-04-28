@@ -63,20 +63,18 @@ public class DigitalId {
         return fullName;
     }
 
-    public DigitalId setFullName(@NotNull String fullName) {
+    public void setFullName(@NotNull String fullName) {
         checkMutable();
         this.fullName = fullName;
-        return this;
     }
 
     public @NotNull String getAddress() {
         return address;
     }
 
-    public DigitalId setAddress(@NotNull String address) {
+    public void setAddress(@NotNull String address) {
         checkMutable();
         this.address = address;
-        return this;
     }
 
     public @NotNull DigitalIdStatus getStatus() {
