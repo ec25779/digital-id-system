@@ -3,6 +3,10 @@ package com.github.ec25779.digitalid.central;
 import com.github.ec25779.digitalid.auth.OrganizationId;
 import com.github.ec25779.digitalid.auth.OrganizationPermissionRegistry;
 import com.github.ec25779.digitalid.auth.Permission;
+import com.github.ec25779.digitalid.log.AuditAction;
+import com.github.ec25779.digitalid.log.AuditEvent;
+import com.github.ec25779.digitalid.log.AuditLog;
+import com.github.ec25779.digitalid.log.VolatileAuditLog;
 import com.github.ec25779.digitalid.model.BiologicalSex;
 import com.github.ec25779.digitalid.model.DigitalId;
 import com.github.ec25779.digitalid.model.DigitalIdStatus;
@@ -17,6 +21,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,18 +35,22 @@ public class DigitalIdentityManagerTest {
 
     private DigitalIdRepository repository;
     private DigitalIdentityManager identityManager;
+    private AuditLog auditLog;
 
     @BeforeEach
     public void setUp() {
+        Clock clock = Clock.fixed(FIXED_NOW, ZoneOffset.UTC);
+
         repository = new VolatileDigitalIdRepository();
+        auditLog = new VolatileAuditLog(clock);
+
         OrganizationPermissionRegistry permissionRegistry = OrganizationPermissionRegistry.builder()
             .grant(ORGANIZATION_ID, Permission.CREATE_IDENTITY, Permission.UPDATE_IDENTITY, Permission.REVOKE_IDENTITY)
             .build();
 
-        Clock clock = Clock.fixed(FIXED_NOW, ZoneOffset.UTC);
-        identityManager = new AuthorizingIdentityManager(
-            new CoreIdentityManager(repository, clock), permissionRegistry
-        );
+        identityManager = new AuthorizingIdentityManager(new AuditingIdentityManager(
+            new CoreIdentityManager(repository, clock), auditLog
+        ), permissionRegistry);
     }
 
     @Test
@@ -54,6 +63,10 @@ public class DigitalIdentityManagerTest {
         assertTrue(digitalId.isPresent());
         assertEquals(digitalId.get(), result);
         assertEquals(FIXED_NOW, result.getCreatedAt());
+
+        List<AuditEvent> events = auditLog.getEvents(result.getId());
+        assertEquals(1, events.size());
+        assertInstanceOf(AuditAction.CreateIdentityAction.class, events.getFirst().action());
     }
 
     @Test
@@ -74,6 +87,10 @@ public class DigitalIdentityManagerTest {
         DigitalId findResult = repository.find(id).orElseThrow();
         assertEquals(id, findResult.getId());
         assertEquals("Jane Doe", updateResult.getFullName());
+
+        List<AuditEvent> events = auditLog.getEvents(id);
+        assertEquals(2, events.size());
+        assertInstanceOf(AuditAction.UpdateIdentityFullNameAction.class, events.getLast().action());
     }
 
     @Test
@@ -94,6 +111,10 @@ public class DigitalIdentityManagerTest {
         DigitalId findResult = repository.find(id).orElseThrow();
         assertEquals(id, findResult.getId());
         assertEquals("456 Elm St", updateResult.getAddress());
+
+        List<AuditEvent> events = auditLog.getEvents(id);
+        assertEquals(2, events.size());
+        assertInstanceOf(AuditAction.UpdateIdentityAddressAction.class, events.getLast().action());
     }
 
     @Test
@@ -110,6 +131,10 @@ public class DigitalIdentityManagerTest {
 
         assertEquals(id, suspendResult.getId());
         assertEquals(DigitalIdStatus.SUSPENDED, suspendResult.getStatus());
+
+        List<AuditEvent> events = auditLog.getEvents(id);
+        assertEquals(2, events.size());
+        assertInstanceOf(AuditAction.UpdateIdentityStatusAction.class, events.getLast().action());
     }
 
     @Test
@@ -129,6 +154,10 @@ public class DigitalIdentityManagerTest {
                 new UpdateIdentitySuspensionCommand(id, true)
             );
         });
+
+        List<AuditEvent> events = auditLog.getEvents(id);
+        assertEquals(2, events.size());
+        assertInstanceOf(AuditAction.UpdateIdentityStatusAction.class, events.getLast().action());
     }
 
     @Test
@@ -149,8 +178,14 @@ public class DigitalIdentityManagerTest {
 
         assertEquals(id, activatedResult.getId());
         assertEquals(DigitalIdStatus.ACTIVE, activatedResult.getStatus());
-    }
 
+        List<AuditEvent> events = auditLog.getEvents(id);
+        assertEquals(3, events.size());
+        assertInstanceOf(AuditAction.UpdateIdentityStatusAction.class, events.get(1).action());
+        assertEquals(DigitalIdStatus.SUSPENDED, ((AuditAction.UpdateIdentityStatusAction) events.get(1).action()).status());
+        assertInstanceOf(AuditAction.UpdateIdentityStatusAction.class, events.get(2).action());
+        assertEquals(DigitalIdStatus.ACTIVE, ((AuditAction.UpdateIdentityStatusAction) events.get(2).action()).status());
+    }
 
     @Test
     public void testRevokeActiveIdentity() {
@@ -163,6 +198,11 @@ public class DigitalIdentityManagerTest {
 
         assertEquals(id, revokedResult.getId());
         assertEquals(DigitalIdStatus.REVOKED, revokedResult.getStatus());
+
+        List<AuditEvent> events = auditLog.getEvents(id);
+        assertEquals(2, events.size());
+        assertInstanceOf(AuditAction.UpdateIdentityStatusAction.class, events.getLast().action());
+        assertEquals(DigitalIdStatus.REVOKED, ((AuditAction.UpdateIdentityStatusAction) events.getLast().action()).status());
     }
 
     @Test
@@ -194,6 +234,11 @@ public class DigitalIdentityManagerTest {
         assertEquals(DigitalIdStatus.REVOKED, digitalId.getStatus());
         assertEquals("John Doe", digitalId.getFullName());
         assertEquals("123 Main St", digitalId.getAddress());
+
+        List<AuditEvent> events = auditLog.getEvents(id);
+        assertEquals(2, events.size());
+        assertInstanceOf(AuditAction.UpdateIdentityStatusAction.class, events.getLast().action());
+        assertEquals(DigitalIdStatus.REVOKED, ((AuditAction.UpdateIdentityStatusAction) events.getLast().action()).status());
     }
 
     @AfterEach
