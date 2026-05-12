@@ -1,4 +1,4 @@
-package com.github.ec25779.digitalid.central;
+package com.github.ec25779.digitalid.service.management;
 
 import com.github.ec25779.digitalid.auth.OrganizationId;
 import com.github.ec25779.digitalid.auth.OrganizationPermissionRegistry;
@@ -13,6 +13,7 @@ import com.github.ec25779.digitalid.model.DigitalIdStatus;
 import com.github.ec25779.digitalid.model.InvalidStateTransitionException;
 import com.github.ec25779.digitalid.repository.DigitalIdRepository;
 import com.github.ec25779.digitalid.repository.VolatileDigitalIdRepository;
+import com.github.ec25779.digitalid.service.management.command.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,14 +28,14 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DigitalIdentityManagerTest {
+public class ManagementServiceTest {
 
     private static final OrganizationId ORGANIZATION_ID = new OrganizationId("central-authority");
     private static final Instant FIXED_NOW = Instant.parse("2026-04-23T00:00:00Z");
     private static final LocalDate TEST_DATE_OF_BIRTH = LocalDate.of(2000, 1, 1);
 
     private DigitalIdRepository repository;
-    private DigitalIdentityManager identityManager;
+    private ManagementService identityManager;
     private AuditLog auditLog;
 
     @BeforeEach
@@ -48,8 +49,8 @@ public class DigitalIdentityManagerTest {
             .grant(ORGANIZATION_ID, Permission.CREATE_IDENTITY, Permission.UPDATE_IDENTITY, Permission.REVOKE_IDENTITY)
             .build();
 
-        identityManager = new AuthorizingIdentityManager(new AuditingIdentityManager(
-            new CoreIdentityManager(repository, clock), auditLog
+        identityManager = new AuthorizingManagementService(new AuditingManagementService(
+            new ManagementServiceImpl(repository, clock), auditLog
         ), permissionRegistry);
     }
 

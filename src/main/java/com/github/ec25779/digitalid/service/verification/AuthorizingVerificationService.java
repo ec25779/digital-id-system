@@ -1,8 +1,10 @@
-package com.github.ec25779.digitalid.verification;
+package com.github.ec25779.digitalid.service.verification;
 
 import com.github.ec25779.digitalid.auth.OrganizationId;
 import com.github.ec25779.digitalid.auth.OrganizationPermissionRegistry;
 import com.github.ec25779.digitalid.auth.Permission;
+import com.github.ec25779.digitalid.service.verification.command.VerifyIdentityBetweenCommand;
+import com.github.ec25779.digitalid.service.verification.command.VerifyIdentityCommand;
 import org.jetbrains.annotations.NotNull;
 
 public class AuthorizingVerificationService implements VerificationService {

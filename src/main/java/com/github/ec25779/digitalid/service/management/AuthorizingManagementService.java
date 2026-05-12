@@ -1,18 +1,21 @@
-package com.github.ec25779.digitalid.central;
+package com.github.ec25779.digitalid.service.management;
 
 import com.github.ec25779.digitalid.auth.OrganizationId;
 import com.github.ec25779.digitalid.auth.OrganizationPermissionRegistry;
 import com.github.ec25779.digitalid.auth.Permission;
+import com.github.ec25779.digitalid.service.management.command.CreateIdentityCommand;
+import com.github.ec25779.digitalid.service.management.command.RevokeIdentityCommand;
+import com.github.ec25779.digitalid.service.management.command.UpdateIdentityCommand;
 import com.github.ec25779.digitalid.model.DigitalId;
 import org.jetbrains.annotations.NotNull;
 
-public class AuthorizingIdentityManager implements DigitalIdentityManager {
+public class AuthorizingManagementService implements ManagementService {
 
-    private final DigitalIdentityManager delegate;
+    private final ManagementService delegate;
     private final OrganizationPermissionRegistry permissionRegistry;
 
-    public AuthorizingIdentityManager(@NotNull DigitalIdentityManager delegate,
-                                      @NotNull OrganizationPermissionRegistry permissionRegistry) {
+    public AuthorizingManagementService(@NotNull ManagementService delegate,
+                                        @NotNull OrganizationPermissionRegistry permissionRegistry) {
         this.delegate = delegate;
         this.permissionRegistry = permissionRegistry;
     }
