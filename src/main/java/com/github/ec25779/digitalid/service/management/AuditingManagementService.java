@@ -1,20 +1,21 @@
-package com.github.ec25779.digitalid.central;
+package com.github.ec25779.digitalid.service.management;
 
 import com.github.ec25779.digitalid.auth.OrganizationId;
 import com.github.ec25779.digitalid.log.AuditAction;
 import com.github.ec25779.digitalid.log.AuditLog;
 import com.github.ec25779.digitalid.model.DigitalId;
 import com.github.ec25779.digitalid.model.DigitalIdStatus;
+import com.github.ec25779.digitalid.service.management.command.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public class AuditingIdentityManager implements DigitalIdentityManager {
+public class AuditingManagementService implements ManagementService {
 
-    private final DigitalIdentityManager delegate;
+    private final ManagementService delegate;
     private final AuditLog auditLog;
 
-    public AuditingIdentityManager(@NotNull DigitalIdentityManager delegate, @NotNull AuditLog auditLog) {
+    public AuditingManagementService(@NotNull ManagementService delegate, @NotNull AuditLog auditLog) {
         this.delegate = delegate;
         this.auditLog = auditLog;
     }

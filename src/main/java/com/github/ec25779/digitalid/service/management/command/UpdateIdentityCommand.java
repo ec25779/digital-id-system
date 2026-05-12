@@ -1,4 +1,4 @@
-package com.github.ec25779.digitalid.central;
+package com.github.ec25779.digitalid.service.management.command;
 
 import org.jetbrains.annotations.NotNull;
 

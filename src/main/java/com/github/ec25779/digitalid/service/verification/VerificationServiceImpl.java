@@ -1,4 +1,4 @@
-package com.github.ec25779.digitalid.verification;
+package com.github.ec25779.digitalid.service.verification;
 
 import com.github.ec25779.digitalid.auth.OrganizationId;
 import com.github.ec25779.digitalid.log.AuditAction;
@@ -7,6 +7,8 @@ import com.github.ec25779.digitalid.log.AuditLog;
 import com.github.ec25779.digitalid.model.DigitalId;
 import com.github.ec25779.digitalid.model.DigitalIdStatus;
 import com.github.ec25779.digitalid.repository.DigitalIdRepository;
+import com.github.ec25779.digitalid.service.verification.command.VerifyIdentityBetweenCommand;
+import com.github.ec25779.digitalid.service.verification.command.VerifyIdentityCommand;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;

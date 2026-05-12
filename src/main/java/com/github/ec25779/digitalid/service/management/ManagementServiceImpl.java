@@ -1,27 +1,28 @@
-package com.github.ec25779.digitalid.central;
+package com.github.ec25779.digitalid.service.management;
 
 import com.github.ec25779.digitalid.auth.OrganizationId;
 import com.github.ec25779.digitalid.model.DigitalId;
 import com.github.ec25779.digitalid.model.DigitalIdStatus;
 import com.github.ec25779.digitalid.model.IdentityNotFoundException;
 import com.github.ec25779.digitalid.repository.DigitalIdRepository;
+import com.github.ec25779.digitalid.service.management.command.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Clock;
 import java.util.Optional;
 import java.util.UUID;
 
-public class CoreIdentityManager implements DigitalIdentityManager {
+public class ManagementServiceImpl implements ManagementService {
 
     private final DigitalIdRepository repository;
     private final Clock clock;
 
-    public CoreIdentityManager(@NotNull DigitalIdRepository repository, @NotNull Clock clock) {
+    public ManagementServiceImpl(@NotNull DigitalIdRepository repository, @NotNull Clock clock) {
         this.repository = repository;
         this.clock = clock;
     }
 
-    public CoreIdentityManager(@NotNull DigitalIdRepository repository) {
+    public ManagementServiceImpl(@NotNull DigitalIdRepository repository) {
         this(repository, Clock.systemUTC());
     }
 
