@@ -1,7 +1,6 @@
 package com.github.ec25779.digitalid.service.management;
 
 import com.github.ec25779.digitalid.auth.OrganizationId;
-import com.github.ec25779.digitalid.management.command.*;
 import com.github.ec25779.digitalid.model.DigitalId;
 import com.github.ec25779.digitalid.model.DigitalIdStatus;
 import com.github.ec25779.digitalid.model.IdentityNotFoundException;

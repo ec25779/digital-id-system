@@ -3,7 +3,6 @@ package com.github.ec25779.digitalid.service.management;
 import com.github.ec25779.digitalid.auth.OrganizationId;
 import com.github.ec25779.digitalid.log.AuditAction;
 import com.github.ec25779.digitalid.log.AuditLog;
-import com.github.ec25779.digitalid.management.command.*;
 import com.github.ec25779.digitalid.model.DigitalId;
 import com.github.ec25779.digitalid.model.DigitalIdStatus;
 import com.github.ec25779.digitalid.service.management.command.*;
