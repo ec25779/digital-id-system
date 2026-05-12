@@ -4,20 +4,15 @@ import com.github.ec25779.digitalid.auth.OrganizationId;
 import com.github.ec25779.digitalid.log.AuditAction;
 import com.github.ec25779.digitalid.log.AuditLog;
 import com.github.ec25779.digitalid.model.DigitalId;
-import com.github.ec25779.digitalid.model.DigitalIdStatus;
 import com.github.ec25779.digitalid.service.lookup.command.LookupIdentityCommand;
-import com.github.ec25779.digitalid.service.management.ManagementService;
-import com.github.ec25779.digitalid.service.management.command.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.UUID;
-
-public class AuditingManagementService implements LookupService {
+public class AuditingLookupService implements LookupService {
 
     private final LookupService delegate;
     private final AuditLog auditLog;
 
-    public AuditingManagementService(@NotNull LookupService delegate, @NotNull AuditLog auditLog) {
+    public AuditingLookupService(@NotNull LookupService delegate, @NotNull AuditLog auditLog) {
         this.delegate = delegate;
         this.auditLog = auditLog;
     }
