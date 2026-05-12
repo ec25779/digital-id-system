@@ -6,8 +6,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 
-public sealed interface AuditAction permits AuditAction.CreateIdentityAction, AuditAction.UpdateIdentityFullNameAction,
-        AuditAction.UpdateIdentityAddressAction, AuditAction.UpdateIdentityStatusAction {
+public sealed interface AuditAction
+    permits AuditAction.CreateIdentityAction, AuditAction.LookupIdentityAction, AuditAction.UpdateIdentityAddressAction,
+            AuditAction.UpdateIdentityFullNameAction, AuditAction.UpdateIdentityStatusAction {
 
      record CreateIdentityAction(@NotNull LocalDate dateOfBirth, @NotNull String placeOfBirth,
                                  @NotNull BiologicalSex biologicalSex, @NotNull String fullName,
@@ -21,6 +22,9 @@ public sealed interface AuditAction permits AuditAction.CreateIdentityAction, Au
      }
 
      record UpdateIdentityStatusAction(@NotNull DigitalIdStatus status) implements AuditAction {
+     }
+
+     record LookupIdentityAction() implements AuditAction {
      }
 
 }
