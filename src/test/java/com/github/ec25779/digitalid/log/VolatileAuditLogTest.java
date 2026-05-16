@@ -1,4 +1,12 @@
 package com.github.ec25779.digitalid.log;
 
-public class VolatileAuditLogTest {
+import org.jetbrains.annotations.NotNull;
+
+public class VolatileAuditLogTest extends AbstractAuditLogTest {
+
+    @Override
+    protected @NotNull AuditLog createAuditLog() {
+        return new VolatileAuditLog();
+    }
+
 }

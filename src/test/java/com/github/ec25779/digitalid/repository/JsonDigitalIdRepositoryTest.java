@@ -23,12 +23,11 @@ public class JsonDigitalIdRepositoryTest extends AbstractDigitalIdRepositoryTest
 
     @Test
     public void testDigitalIdPersists() {
-        DigitalIdRepository repo = createRepository();
         DigitalId digitalId = createNewId();
-        repo.save(digitalId);
+        repository.save(digitalId);
 
-        repo = createRepository();
-        Optional<DigitalId> result = repo.find(digitalId.getId());
+        repository = createRepository();
+        Optional<DigitalId> result = repository.find(digitalId.getId());
         assertTrue(result.isPresent());
         assertEquals(digitalId, result.get());
     }

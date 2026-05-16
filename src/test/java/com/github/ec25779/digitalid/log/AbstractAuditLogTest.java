@@ -2,6 +2,7 @@ package com.github.ec25779.digitalid.log;
 
 import com.github.ec25779.digitalid.auth.OrganizationId;
 import com.github.ec25779.digitalid.model.DigitalIdStatus;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,21 +14,23 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AuditLogTest {
+public abstract class AbstractAuditLogTest {
 
-    private static final UUID TEST_IDENTITY_ID = UUID.randomUUID();
-    private static final Instant TEST_INSTANT = Instant.parse("2026-04-08T12:00:00Z");
-    private static final Instant TEST_INTERVAL_START = Instant.parse("2026-04-08T11:00:00Z");
-    private static final Instant TEST_INTERVAL_END = Instant.parse("2026-04-08T13:00:00Z");
-    private static final Instant TEST_INSTANT_OUTSIDE_INTERVAL = Instant.parse("2026-04-08T14:00:00Z");
+    protected static final UUID TEST_IDENTITY_ID = UUID.randomUUID();
+    protected static final Instant TEST_INSTANT = Instant.parse("2026-04-08T12:00:00Z");
+    protected static final Instant TEST_INTERVAL_START = Instant.parse("2026-04-08T11:00:00Z");
+    protected static final Instant TEST_INTERVAL_END = Instant.parse("2026-04-08T13:00:00Z");
+    protected static final Instant TEST_INSTANT_OUTSIDE_INTERVAL = Instant.parse("2026-04-08T14:00:00Z");
 
-    private static final OrganizationId TEST_ORG = new OrganizationId("test-org");
+    protected static final OrganizationId TEST_ORG = new OrganizationId("test-org");
 
-    private AuditLog auditLog;
+    protected abstract @NotNull AuditLog createAuditLog();
+
+    protected AuditLog auditLog;
 
     @BeforeEach
     public void setUp() {
-        auditLog = new VolatileAuditLog();
+        auditLog = createAuditLog();
     }
 
     @Test
