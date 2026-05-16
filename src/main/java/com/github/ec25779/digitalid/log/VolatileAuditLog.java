@@ -37,6 +37,10 @@ public class VolatileAuditLog implements AuditLog {
         return event;
     }
 
+    @NotNull List<AuditEvent> getAllEvents() {
+        return List.copyOf(events);
+    }
+
     @Override
     public @NotNull Optional<AuditEvent> getEvent(@NotNull UUID eventId) {
         return events.stream()
