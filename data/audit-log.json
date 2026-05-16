@@ -1,0 +1,53 @@
+[
+  {
+    "id": "9fa78756-9b17-4ae8-b298-62cb4e64314e",
+    "identityId": "04a46213-a9ba-4c45-87f9-7b0dfaedf14c",
+    "timestamp": "2026-05-16T20:30:39.015790100Z",
+    "caller": {
+      "id": "central-authority"
+    },
+    "action": {
+      "dateOfBirth": "1990-01-01",
+      "placeOfBirth": "London",
+      "biologicalSex": "MALE",
+      "fullName": "John Doe",
+      "address": "123 Main St",
+      "status": "ACTIVE",
+      "type": "CreateIdentity"
+    }
+  },
+  {
+    "id": "1f908f9f-c923-44da-b52b-13b0a649fe5c",
+    "identityId": "04a46213-a9ba-4c45-87f9-7b0dfaedf14c",
+    "timestamp": "2026-05-16T20:30:39.060788500Z",
+    "caller": {
+      "id": "central-authority"
+    },
+    "action": {
+      "type": "LookupIdentity"
+    }
+  },
+  {
+    "id": "f98978dc-df10-4ef7-b84f-7ca35543eed4",
+    "identityId": "04a46213-a9ba-4c45-87f9-7b0dfaedf14c",
+    "timestamp": "2026-05-16T20:30:39.063787300Z",
+    "caller": {
+      "id": "driving-licence-authority"
+    },
+    "action": {
+      "scope": "ELIGIBLE",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "7d100239-8995-419d-8871-f24bddc1004c",
+    "identityId": "04a46213-a9ba-4c45-87f9-7b0dfaedf14c",
+    "timestamp": "2026-05-16T20:30:39.065287700Z",
+    "caller": {
+      "id": "driving-licence-authority"
+    },
+    "action": {
+      "type": "LookupIdentity"
+    }
+  }
+]

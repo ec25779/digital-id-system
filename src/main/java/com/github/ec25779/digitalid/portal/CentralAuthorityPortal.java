@@ -25,9 +25,9 @@ public class CentralAuthorityPortal {
         this.lookupService = lookupService;
     }
 
-    public @NotNull DigitalId lookupIdentity(@NotNull LookupIdentityCommand command)
+    public @NotNull DigitalId lookupIdentity(@NotNull UUID identityId)
         throws IdentityNotFoundException {
-        return lookupService.lookupIdentity(ORGANIZATION_ID, command);
+        return lookupService.lookupIdentity(ORGANIZATION_ID, new LookupIdentityCommand(identityId));
     }
 
     public @NotNull DigitalId createIdentity(@NotNull LocalDate dateOfBirth, @NotNull String placeOfBirth,

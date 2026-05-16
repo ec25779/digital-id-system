@@ -1,0 +1,12 @@
+[
+  {
+    "id": "04a46213-a9ba-4c45-87f9-7b0dfaedf14c",
+    "createdAt": "2026-05-16T20:30:38.983789300Z",
+    "dateOfBirth": "1990-01-01",
+    "placeOfBirth": "London",
+    "biologicalSex": "MALE",
+    "fullName": "John Doe",
+    "address": "123 Main St",
+    "status": "ACTIVE"
+  }
+]
