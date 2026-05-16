@@ -1,6 +1,8 @@
 package com.github.ec25779.digitalid.service.verification;
 
 import com.github.ec25779.digitalid.auth.OrganizationId;
+import com.github.ec25779.digitalid.auth.OrganizationPermissionRegistry;
+import com.github.ec25779.digitalid.auth.Permission;
 import com.github.ec25779.digitalid.log.AuditAction;
 import com.github.ec25779.digitalid.log.AuditEvent;
 import com.github.ec25779.digitalid.log.AuditLog;
@@ -45,7 +47,14 @@ public class VerificationServiceTest {
         Clock clock = Clock.fixed(CREATED_AT, ZoneOffset.UTC);
         repository = new VolatileDigitalIdRepository();
         auditLog = new VolatileAuditLog(clock);
-        verificationService = new VerificationServiceImpl(repository, auditLog);
+
+        OrganizationPermissionRegistry permissionRegistry = OrganizationPermissionRegistry.builder()
+            .grant(CALLER, Permission.VERIFY_IDENTITY, Permission.VERIFY_IDENTITY_BETWEEN)
+            .build();
+
+        verificationService = new AuthorizingVerificationService(
+            new AuditingVerificationService(new VerificationServiceImpl(repository, auditLog), auditLog), permissionRegistry
+        );
     }
 
     @Test
