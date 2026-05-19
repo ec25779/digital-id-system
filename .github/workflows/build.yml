@@ -16,3 +16,19 @@ jobs:
           java-version: "23"
       - name: Build and Test
         run: mvn -B clean verify
+      - name: Upload JaCoCo report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: target/site/jacoco
+      - name: Publish JaCoCo summary
+        if: always()
+        uses: madrapps/jacoco-report@v1.7.1
+        with:
+          paths: target/site/jacoco/jacoco.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: JaCoCo Coverage Report
+          update-comment: true
+          min-coverage-overall: 60
+          min-coverage-changed-files: 60
