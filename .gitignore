@@ -1,4 +1,5 @@
 .idea/
 *.iml
 target/
+data/
 src/main/java/com/github/ec25779/digitalid/generator

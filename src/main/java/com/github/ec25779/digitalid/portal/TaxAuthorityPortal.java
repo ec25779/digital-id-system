@@ -28,7 +28,7 @@ public class TaxAuthorityPortal {
         Instant from = getTaxYearStart(year);
         Instant to = getTaxYearStart(year + 1);
         return verificationService.verifyIdentityBetween(ORGANIZATION_ID,
-            new VerifyIdentityBetweenCommand(identityId, VerificationScope.VALID, from, to));
+            new VerifyIdentityBetweenCommand(identityId, VerificationScope.ELIGIBLE, from, to));
     }
 
     public boolean verifyIdentityForCurrentTaxYear(@NotNull UUID identityId) {

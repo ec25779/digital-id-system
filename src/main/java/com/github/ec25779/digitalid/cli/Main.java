@@ -1,4 +1,4 @@
-package com.github.ec25779.digitalid;
+package com.github.ec25779.digitalid.cli;
 
 import com.github.ec25779.digitalid.auth.OrganizationPermissionRegistry;
 import com.github.ec25779.digitalid.auth.Permission;
@@ -7,8 +7,7 @@ import com.github.ec25779.digitalid.log.JsonAuditLog;
 import com.github.ec25779.digitalid.portal.BankPortal;
 import com.github.ec25779.digitalid.portal.CentralAuthorityPortal;
 import com.github.ec25779.digitalid.portal.DrivingLicenceAuthorityPortal;
-import com.github.ec25779.digitalid.portal.LicenceEligibility;
-import com.github.ec25779.digitalid.portal.LicenceType;
+import com.github.ec25779.digitalid.portal.HealthServicePortal;
 import com.github.ec25779.digitalid.portal.TaxAuthorityPortal;
 import com.github.ec25779.digitalid.repository.DigitalIdRepository;
 import com.github.ec25779.digitalid.repository.JsonDigitalIdRepository;
@@ -26,7 +25,8 @@ import com.github.ec25779.digitalid.service.verification.VerificationService;
 import com.github.ec25779.digitalid.service.verification.VerificationServiceImpl;
 
 import java.io.File;
-import java.util.UUID;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
 public class Main {
 
@@ -47,6 +47,10 @@ public class Main {
             )
             .grant("bank",
                 Permission.VERIFY_IDENTITY
+            )
+            .grant("health-service",
+                Permission.VERIFY_IDENTITY,
+                Permission.LOOKUP_IDENTITY
             )
             .build();
 
@@ -71,21 +75,15 @@ public class Main {
         ), permissionRegistry);
 
         CentralAuthorityPortal centralAuthorityPortal = new CentralAuthorityPortal(managementService, lookupService);
-        TaxAuthorityPortal hmrcPortal = new TaxAuthorityPortal(verificationService);
+        TaxAuthorityPortal taxPortal = new TaxAuthorityPortal(verificationService);
         DrivingLicenceAuthorityPortal dvlaPortal = new DrivingLicenceAuthorityPortal(verificationService, lookupService);
         BankPortal bankPortal = new BankPortal(verificationService);
+        HealthServicePortal healthPortal = new HealthServicePortal(verificationService, lookupService);
 
-//        DigitalId created = centralAuthorityPortal.createIdentity(
-//            LocalDate.of(1990, 1, 1), "London", BiologicalSex.MALE, "John Doe", "123 Main St");
-//        System.out.println("Created: " + created);
-//
-//        DigitalId looked = centralAuthorityPortal.lookupIdentity(created.getId());
-//        System.out.println("Looked up: " + looked);
-
-        LicenceEligibility eligibility = dvlaPortal.checkLicenceEligibility(UUID.fromString("04a46213-a9ba-4c45-87f9-7b0dfaedf14c"), LicenceType.FULL);
-        System.out.println("Full licence eligibility: " + eligibility);
-
-        // TODO select portal and interact with commands
+        try (Scanner scanner = new Scanner(System.in)) {
+            PrintWriter out = new PrintWriter(System.out, true);
+            new Cli(scanner, out, centralAuthorityPortal, taxPortal, dvlaPortal, bankPortal, healthPortal).run();
+        }
     }
 
 }
