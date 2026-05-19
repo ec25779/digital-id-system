@@ -1,25 +1,49 @@
 [
   {
-    "id": "9fa78756-9b17-4ae8-b298-62cb4e64314e",
-    "identityId": "04a46213-a9ba-4c45-87f9-7b0dfaedf14c",
-    "timestamp": "2026-05-16T20:30:39.015790100Z",
+    "id": "821cc17f-4fec-4e0d-890f-3400c835e3d0",
+    "identityId": "925dc0f3-f42e-4aae-9847-d9aa8fbe1cb6",
+    "timestamp": "2024-05-10T12:00:00.001Z",
     "caller": {
       "id": "central-authority"
     },
     "action": {
-      "dateOfBirth": "1990-01-01",
+      "dateOfBirth": "1985-05-01",
       "placeOfBirth": "London",
-      "biologicalSex": "MALE",
-      "fullName": "John Doe",
-      "address": "123 Main St",
+      "biologicalSex": "FEMALE",
+      "fullName": "Alice Adams",
+      "address": "1 Old Street",
       "status": "ACTIVE",
       "type": "CreateIdentity"
     }
   },
   {
-    "id": "1f908f9f-c923-44da-b52b-13b0a649fe5c",
-    "identityId": "04a46213-a9ba-4c45-87f9-7b0dfaedf14c",
-    "timestamp": "2026-05-16T20:30:39.060788500Z",
+    "id": "83b6f4fd-67a4-4a5c-aa64-0e41a278da82",
+    "identityId": "925dc0f3-f42e-4aae-9847-d9aa8fbe1cb6",
+    "timestamp": "2025-02-14T12:00:00Z",
+    "caller": {
+      "id": "central-authority"
+    },
+    "action": {
+      "address": "2 New Lane",
+      "type": "UpdateIdentityAddress"
+    }
+  },
+  {
+    "id": "0759963a-2283-4448-8fe6-4becfe277551",
+    "identityId": "925dc0f3-f42e-4aae-9847-d9aa8fbe1cb6",
+    "timestamp": "2025-02-14T12:00:00.001Z",
+    "caller": {
+      "id": "central-authority"
+    },
+    "action": {
+      "fullName": "Alice Adams-Brown",
+      "type": "UpdateIdentityFullName"
+    }
+  },
+  {
+    "id": "5164f6e5-bf70-4b1b-8491-d6c3060773c9",
+    "identityId": "925dc0f3-f42e-4aae-9847-d9aa8fbe1cb6",
+    "timestamp": "2025-02-14T12:00:00.002Z",
     "caller": {
       "id": "central-authority"
     },
@@ -28,9 +52,254 @@
     }
   },
   {
-    "id": "f98978dc-df10-4ef7-b84f-7ca35543eed4",
-    "identityId": "04a46213-a9ba-4c45-87f9-7b0dfaedf14c",
-    "timestamp": "2026-05-16T20:30:39.063787300Z",
+    "id": "e49a1e28-1ede-4f06-82b4-7a65b615ee06",
+    "identityId": "d37e2fb3-480e-4dc3-8008-756c01521042",
+    "timestamp": "2025-06-20T12:00:00.001Z",
+    "caller": {
+      "id": "central-authority"
+    },
+    "action": {
+      "dateOfBirth": "2010-06-15",
+      "placeOfBirth": "Manchester",
+      "biologicalSex": "MALE",
+      "fullName": "Bob Brown",
+      "address": "3 School Road",
+      "status": "ACTIVE",
+      "type": "CreateIdentity"
+    }
+  },
+  {
+    "id": "91281ef2-9a15-4817-9c97-d049fdae8364",
+    "identityId": "4d5a6a7e-6f5d-4b4e-a659-a29e2e8e4494",
+    "timestamp": "2024-09-01T12:00:00.001Z",
+    "caller": {
+      "id": "central-authority"
+    },
+    "action": {
+      "dateOfBirth": "1955-03-20",
+      "placeOfBirth": "Bristol",
+      "biologicalSex": "FEMALE",
+      "fullName": "Carol Clarke",
+      "address": "5 Park View",
+      "status": "ACTIVE",
+      "type": "CreateIdentity"
+    }
+  },
+  {
+    "id": "4e0b0f15-1068-4384-8203-7583c82cdb84",
+    "identityId": "69570b34-a790-40b7-b455-06d5c70c056c",
+    "timestamp": "2024-04-30T12:00:00.001Z",
+    "caller": {
+      "id": "central-authority"
+    },
+    "action": {
+      "dateOfBirth": "1980-07-10",
+      "placeOfBirth": "Leeds",
+      "biologicalSex": "MALE",
+      "fullName": "David Davies",
+      "address": "9 River Way",
+      "status": "ACTIVE",
+      "type": "CreateIdentity"
+    }
+  },
+  {
+    "id": "9ee021ac-0671-4fdb-a812-4ed2d17cc544",
+    "identityId": "69570b34-a790-40b7-b455-06d5c70c056c",
+    "timestamp": "2025-08-01T12:00:00Z",
+    "caller": {
+      "id": "central-authority"
+    },
+    "action": {
+      "status": "SUSPENDED",
+      "type": "UpdateIdentityStatus"
+    }
+  },
+  {
+    "id": "8b6a8713-3148-4e96-b22a-b43343eaceae",
+    "identityId": "43cdea05-528d-46d0-86d6-bea6d46aca3e",
+    "timestamp": "2024-07-01T12:00:00.001Z",
+    "caller": {
+      "id": "central-authority"
+    },
+    "action": {
+      "dateOfBirth": "1975-08-22",
+      "placeOfBirth": "Cardiff",
+      "biologicalSex": "FEMALE",
+      "fullName": "Eve Edwards",
+      "address": "12 Hill Top",
+      "status": "ACTIVE",
+      "type": "CreateIdentity"
+    }
+  },
+  {
+    "id": "063c1eb1-59eb-44ff-bde0-3659086249bd",
+    "identityId": "43cdea05-528d-46d0-86d6-bea6d46aca3e",
+    "timestamp": "2024-11-15T12:00:00Z",
+    "caller": {
+      "id": "central-authority"
+    },
+    "action": {
+      "status": "REVOKED",
+      "type": "UpdateIdentityStatus"
+    }
+  },
+  {
+    "id": "3f03e18b-04f7-4b7d-966a-9f48b6964707",
+    "identityId": "8232363c-0408-45be-aade-ab810cdfbfc7",
+    "timestamp": "2024-04-10T12:00:00.001Z",
+    "caller": {
+      "id": "central-authority"
+    },
+    "action": {
+      "dateOfBirth": "1990-01-01",
+      "placeOfBirth": "Glasgow",
+      "biologicalSex": "OTHER",
+      "fullName": "Frank Fisher",
+      "address": "7 Loch Side",
+      "status": "ACTIVE",
+      "type": "CreateIdentity"
+    }
+  },
+  {
+    "id": "80995083-cd2f-45ed-9926-81eafc8daa0b",
+    "identityId": "8232363c-0408-45be-aade-ab810cdfbfc7",
+    "timestamp": "2025-06-01T12:00:00Z",
+    "caller": {
+      "id": "central-authority"
+    },
+    "action": {
+      "status": "SUSPENDED",
+      "type": "UpdateIdentityStatus"
+    }
+  },
+  {
+    "id": "81482a34-4900-4946-9c1a-d022ad5bb7e2",
+    "identityId": "8232363c-0408-45be-aade-ab810cdfbfc7",
+    "timestamp": "2025-10-01T12:00:00Z",
+    "caller": {
+      "id": "central-authority"
+    },
+    "action": {
+      "status": "ACTIVE",
+      "type": "UpdateIdentityStatus"
+    }
+  },
+  {
+    "id": "707a7e5e-3be1-4826-9c99-72fde4e8cb46",
+    "identityId": "925dc0f3-f42e-4aae-9847-d9aa8fbe1cb6",
+    "timestamp": "2026-05-01T12:00:00Z",
+    "caller": {
+      "id": "tax-authority"
+    },
+    "action": {
+      "scope": "VALID",
+      "from": "2026-04-06T00:00:00Z",
+      "to": "2027-04-06T00:00:00Z",
+      "type": "VerifyIdentityBetween"
+    }
+  },
+  {
+    "id": "79a4b757-b08c-4129-ac43-a2f2b3a2567a",
+    "identityId": "69570b34-a790-40b7-b455-06d5c70c056c",
+    "timestamp": "2026-05-01T12:00:00.001Z",
+    "caller": {
+      "id": "tax-authority"
+    },
+    "action": {
+      "scope": "VALID",
+      "from": "2026-04-06T00:00:00Z",
+      "to": "2027-04-06T00:00:00Z",
+      "type": "VerifyIdentityBetween"
+    }
+  },
+  {
+    "id": "de470e15-c87c-4bd8-8838-c104f7f206ee",
+    "identityId": "69570b34-a790-40b7-b455-06d5c70c056c",
+    "timestamp": "2026-05-01T12:00:00.002Z",
+    "caller": {
+      "id": "tax-authority"
+    },
+    "action": {
+      "scope": "VALID",
+      "from": "2024-04-06T00:00:00Z",
+      "to": "2025-04-06T00:00:00Z",
+      "type": "VerifyIdentityBetween"
+    }
+  },
+  {
+    "id": "fec6c690-a941-46b2-a27c-25d26cfa1510",
+    "identityId": "43cdea05-528d-46d0-86d6-bea6d46aca3e",
+    "timestamp": "2026-05-01T12:00:00.003Z",
+    "caller": {
+      "id": "tax-authority"
+    },
+    "action": {
+      "scope": "VALID",
+      "from": "2026-04-06T00:00:00Z",
+      "to": "2027-04-06T00:00:00Z",
+      "type": "VerifyIdentityBetween"
+    }
+  },
+  {
+    "id": "a0b86187-9762-44ef-ab3d-658ee7a08f7a",
+    "identityId": "43cdea05-528d-46d0-86d6-bea6d46aca3e",
+    "timestamp": "2026-05-01T12:00:00.004Z",
+    "caller": {
+      "id": "tax-authority"
+    },
+    "action": {
+      "scope": "VALID",
+      "from": "2024-04-06T00:00:00Z",
+      "to": "2025-04-06T00:00:00Z",
+      "type": "VerifyIdentityBetween"
+    }
+  },
+  {
+    "id": "5cdaba51-7c7e-4d9f-bfd2-9a531ab4f084",
+    "identityId": "8232363c-0408-45be-aade-ab810cdfbfc7",
+    "timestamp": "2026-05-01T12:00:00.005Z",
+    "caller": {
+      "id": "tax-authority"
+    },
+    "action": {
+      "scope": "VALID",
+      "from": "2026-04-06T00:00:00Z",
+      "to": "2027-04-06T00:00:00Z",
+      "type": "VerifyIdentityBetween"
+    }
+  },
+  {
+    "id": "bac406ab-436b-4bea-8f11-6b3784dc6c74",
+    "identityId": "d37e2fb3-480e-4dc3-8008-756c01521042",
+    "timestamp": "2026-05-01T12:00:00.006Z",
+    "caller": {
+      "id": "tax-authority"
+    },
+    "action": {
+      "scope": "VALID",
+      "from": "2024-04-06T00:00:00Z",
+      "to": "2025-04-06T00:00:00Z",
+      "type": "VerifyIdentityBetween"
+    }
+  },
+  {
+    "id": "cf71a997-78e4-4b13-bf24-039c19342797",
+    "identityId": "aaf18683-e337-4ff4-b88e-01fb7aa8540a",
+    "timestamp": "2026-05-01T12:00:00.007Z",
+    "caller": {
+      "id": "tax-authority"
+    },
+    "action": {
+      "scope": "VALID",
+      "from": "2026-04-06T00:00:00Z",
+      "to": "2027-04-06T00:00:00Z",
+      "type": "VerifyIdentityBetween"
+    }
+  },
+  {
+    "id": "76fb37ba-cc6e-43e0-87f8-541a20f80d2b",
+    "identityId": "925dc0f3-f42e-4aae-9847-d9aa8fbe1cb6",
+    "timestamp": "2026-05-01T12:00:00.008Z",
     "caller": {
       "id": "driving-licence-authority"
     },
@@ -40,14 +309,285 @@
     }
   },
   {
-    "id": "7d100239-8995-419d-8871-f24bddc1004c",
-    "identityId": "04a46213-a9ba-4c45-87f9-7b0dfaedf14c",
-    "timestamp": "2026-05-16T20:30:39.065287700Z",
+    "id": "37756b1e-e08c-4563-92f5-1ded8e267a59",
+    "identityId": "925dc0f3-f42e-4aae-9847-d9aa8fbe1cb6",
+    "timestamp": "2026-05-01T12:00:00.009Z",
     "caller": {
       "id": "driving-licence-authority"
     },
     "action": {
       "type": "LookupIdentity"
+    }
+  },
+  {
+    "id": "70462ded-cbe0-43db-a3f3-2e22910ce5c5",
+    "identityId": "d37e2fb3-480e-4dc3-8008-756c01521042",
+    "timestamp": "2026-05-01T12:00:00.010Z",
+    "caller": {
+      "id": "driving-licence-authority"
+    },
+    "action": {
+      "scope": "ELIGIBLE",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "a811150b-1304-47e2-95d9-917da0ba9407",
+    "identityId": "d37e2fb3-480e-4dc3-8008-756c01521042",
+    "timestamp": "2026-05-01T12:00:00.011Z",
+    "caller": {
+      "id": "driving-licence-authority"
+    },
+    "action": {
+      "type": "LookupIdentity"
+    }
+  },
+  {
+    "id": "74845cce-f66e-4942-a31b-f3a1a2b7be47",
+    "identityId": "d37e2fb3-480e-4dc3-8008-756c01521042",
+    "timestamp": "2026-05-01T12:00:00.012Z",
+    "caller": {
+      "id": "driving-licence-authority"
+    },
+    "action": {
+      "scope": "ELIGIBLE",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "ac766e4f-215a-4aed-9d36-c58b2410abbe",
+    "identityId": "d37e2fb3-480e-4dc3-8008-756c01521042",
+    "timestamp": "2026-05-01T12:00:00.013Z",
+    "caller": {
+      "id": "driving-licence-authority"
+    },
+    "action": {
+      "type": "LookupIdentity"
+    }
+  },
+  {
+    "id": "df5971c2-755a-42de-9c83-e3e59231cae1",
+    "identityId": "69570b34-a790-40b7-b455-06d5c70c056c",
+    "timestamp": "2026-05-01T12:00:00.014Z",
+    "caller": {
+      "id": "driving-licence-authority"
+    },
+    "action": {
+      "scope": "ELIGIBLE",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "3292f57a-abdb-483b-a204-530157735ef8",
+    "identityId": "43cdea05-528d-46d0-86d6-bea6d46aca3e",
+    "timestamp": "2026-05-01T12:00:00.015Z",
+    "caller": {
+      "id": "driving-licence-authority"
+    },
+    "action": {
+      "scope": "ELIGIBLE",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "14e35902-4482-4ab7-90e6-2a4a39b2deb1",
+    "identityId": "a01df1f2-cb3f-450e-a23f-db7725ba8161",
+    "timestamp": "2026-05-01T12:00:00.016Z",
+    "caller": {
+      "id": "driving-licence-authority"
+    },
+    "action": {
+      "scope": "ELIGIBLE",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "d9d0cba7-f59f-4928-a050-3715fa8073aa",
+    "identityId": "925dc0f3-f42e-4aae-9847-d9aa8fbe1cb6",
+    "timestamp": "2026-05-01T12:00:00.017Z",
+    "caller": {
+      "id": "bank"
+    },
+    "action": {
+      "scope": "VALID",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "484018fa-e6d6-46b4-8bb9-7d2aa97dbea8",
+    "identityId": "925dc0f3-f42e-4aae-9847-d9aa8fbe1cb6",
+    "timestamp": "2026-05-01T12:00:00.018Z",
+    "caller": {
+      "id": "bank"
+    },
+    "action": {
+      "scope": "ELIGIBLE",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "76b9d2ed-72e5-4126-bac5-2995a9a813ca",
+    "identityId": "69570b34-a790-40b7-b455-06d5c70c056c",
+    "timestamp": "2026-05-01T12:00:00.019Z",
+    "caller": {
+      "id": "bank"
+    },
+    "action": {
+      "scope": "VALID",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "ccb681a5-07a4-4561-8ab2-d6d59fe8ca55",
+    "identityId": "69570b34-a790-40b7-b455-06d5c70c056c",
+    "timestamp": "2026-05-01T12:00:00.020Z",
+    "caller": {
+      "id": "bank"
+    },
+    "action": {
+      "scope": "ELIGIBLE",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "dccdec1c-4f4f-4767-9340-421e2cb87d24",
+    "identityId": "43cdea05-528d-46d0-86d6-bea6d46aca3e",
+    "timestamp": "2026-05-01T12:00:00.021Z",
+    "caller": {
+      "id": "bank"
+    },
+    "action": {
+      "scope": "VALID",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "fd441c9f-9915-4d01-88e1-617cfb8b7f95",
+    "identityId": "43cdea05-528d-46d0-86d6-bea6d46aca3e",
+    "timestamp": "2026-05-01T12:00:00.022Z",
+    "caller": {
+      "id": "bank"
+    },
+    "action": {
+      "scope": "ELIGIBLE",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "a90c225e-d1af-4c38-95a0-d647f15afd0d",
+    "identityId": "24d5d8ca-eba2-4eaf-b61f-d952eadf14fd",
+    "timestamp": "2026-05-01T12:00:00.023Z",
+    "caller": {
+      "id": "bank"
+    },
+    "action": {
+      "scope": "VALID",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "17672320-c5c3-40ff-a611-b6d6a4ebeb8d",
+    "identityId": "925dc0f3-f42e-4aae-9847-d9aa8fbe1cb6",
+    "timestamp": "2026-05-01T12:00:00.024Z",
+    "caller": {
+      "id": "health-service"
+    },
+    "action": {
+      "scope": "VALID",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "185b3dfd-c0d3-48fd-81e2-c342ba116a39",
+    "identityId": "925dc0f3-f42e-4aae-9847-d9aa8fbe1cb6",
+    "timestamp": "2026-05-01T12:00:00.025Z",
+    "caller": {
+      "id": "health-service"
+    },
+    "action": {
+      "scope": "VALID",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "e9adad49-6461-4e3e-bf1c-b78e09a2c721",
+    "identityId": "925dc0f3-f42e-4aae-9847-d9aa8fbe1cb6",
+    "timestamp": "2026-05-01T12:00:00.026Z",
+    "caller": {
+      "id": "health-service"
+    },
+    "action": {
+      "type": "LookupIdentity"
+    }
+  },
+  {
+    "id": "749ce512-cecb-489f-ac60-b89185d04875",
+    "identityId": "4d5a6a7e-6f5d-4b4e-a659-a29e2e8e4494",
+    "timestamp": "2026-05-01T12:00:00.027Z",
+    "caller": {
+      "id": "health-service"
+    },
+    "action": {
+      "scope": "VALID",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "712ac734-2abf-4ae6-a4f4-cdfe89df1455",
+    "identityId": "4d5a6a7e-6f5d-4b4e-a659-a29e2e8e4494",
+    "timestamp": "2026-05-01T12:00:00.028Z",
+    "caller": {
+      "id": "health-service"
+    },
+    "action": {
+      "type": "LookupIdentity"
+    }
+  },
+  {
+    "id": "8819d417-66e4-4993-953e-bbe96541cc6a",
+    "identityId": "69570b34-a790-40b7-b455-06d5c70c056c",
+    "timestamp": "2026-05-01T12:00:00.029Z",
+    "caller": {
+      "id": "health-service"
+    },
+    "action": {
+      "scope": "VALID",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "df58395e-0dfa-48a2-a974-918b9f989d2c",
+    "identityId": "69570b34-a790-40b7-b455-06d5c70c056c",
+    "timestamp": "2026-05-01T12:00:00.030Z",
+    "caller": {
+      "id": "health-service"
+    },
+    "action": {
+      "type": "LookupIdentity"
+    }
+  },
+  {
+    "id": "d51a77f0-e7ca-4b6b-bde7-9a2194e14b35",
+    "identityId": "43cdea05-528d-46d0-86d6-bea6d46aca3e",
+    "timestamp": "2026-05-01T12:00:00.031Z",
+    "caller": {
+      "id": "health-service"
+    },
+    "action": {
+      "scope": "VALID",
+      "type": "VerifyIdentity"
+    }
+  },
+  {
+    "id": "1611efa4-1a90-487c-ab40-54b319884991",
+    "identityId": "c8d311aa-d111-404b-983f-948511e6f391",
+    "timestamp": "2026-05-01T12:00:00.032Z",
+    "caller": {
+      "id": "health-service"
+    },
+    "action": {
+      "scope": "VALID",
+      "type": "VerifyIdentity"
     }
   }
 ]
