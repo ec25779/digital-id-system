@@ -7,14 +7,16 @@ import org.jetbrains.annotations.NotNull;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
+
 import java.util.function.Function;
 
 public class Cli {
 
-    private final Scanner scanner;
     private final PrintWriter out;
+    private final PortalShell shell;
     private final CentralAuthorityPortal central;
     private final TaxAuthorityPortal tax;
     private final DrivingLicenceAuthorityPortal dvla;
@@ -24,8 +26,8 @@ public class Cli {
     public Cli(@NotNull Scanner scanner, @NotNull PrintWriter out, @NotNull CentralAuthorityPortal central,
                @NotNull TaxAuthorityPortal tax, @NotNull DrivingLicenceAuthorityPortal dvla, @NotNull BankPortal bank,
                @NotNull HealthServicePortal health) {
-        this.scanner = scanner;
         this.out = out;
+        this.shell = new PortalShell(scanner, out);
         this.central = central;
         this.tax = tax;
         this.dvla = dvla;
@@ -44,13 +46,13 @@ public class Cli {
             out.println("  4) bank");
             out.println("  5) health-service");
             out.println("  0) exit");
-            String choice = prompt("> ");
+            String choice = shell.readLine("> ");
             switch (choice) {
-                case "1" -> centralLoop();
-                case "2" -> taxLoop();
-                case "3" -> dvlaLoop();
-                case "4" -> bankLoop();
-                case "5" -> healthLoop();
+                case "1" -> shell.run("central-authority", "central", centralCommands());
+                case "2" -> shell.run("tax-authority", "tax", taxCommands());
+                case "3" -> shell.run("driving-licence-authority", "dvla", dvlaCommands());
+                case "4" -> shell.run("bank", "bank", bankCommands());
+                case "5" -> shell.run("health-service", "health", healthCommands());
                 case "0", "exit", "quit" -> {
                     out.println("Goodbye.");
                     return;
@@ -60,177 +62,82 @@ public class Cli {
         }
     }
 
-    private void centralLoop() {
-        String help = "commands: create, lookup, update-name, update-address, suspend, reinstate, revoke, back";
-        out.println("[central-authority] " + help);
-        while (true) {
-            String cmd = prompt("central> ");
-            try {
-                switch (cmd) {
-                    case "" -> {
-                    }
-                    case "help" -> out.println(help);
-                    case "back" -> {
-                        return;
-                    }
-                    case "create" -> {
-                        LocalDate dob = promptDateOfBirth();
-                        String placeOfBirth = promptPlaceOfBirth();
-                        BiologicalSex sex = promptBiologicalSex();
-                        String fullName = promptFullName();
-                        String address = promptAddress();
-                        DigitalId id = central.createIdentity(dob, placeOfBirth, sex, fullName, address);
-                        out.println("Created: " + id);
-                    }
-                    case "lookup" -> {
-                        UUID id = promptDigitalId();
-                        out.println(central.lookupIdentity(id));
-                    }
-                    case "update-name" -> {
-                        UUID id = promptDigitalId();
-                        String name = prompt("New full name: ");
-                        out.println(central.updateIdentityFullName(id, name));
-                    }
-                    case "update-address" -> {
-                        UUID id = promptDigitalId();
-                        String address = prompt("New address: ");
-                        out.println(central.updateIdentityAddress(id, address));
-                    }
-                    case "suspend" -> out.println(central.suspendIdentity(promptDigitalId()));
-                    case "reinstate" -> out.println(central.reinstateIdentity(promptDigitalId()));
-                    case "revoke" -> out.println(central.revokeIdentity(promptDigitalId()));
-                    default -> out.println("Unknown. " + help);
-                }
-            } catch (Exception e) {
-                reportError(e);
-            }
-        }
+    private @NotNull List<PortalCommand> centralCommands() {
+        return List.of(
+            new PortalCommand("create", "Create a new identity", () -> {
+                LocalDate dob = promptDateOfBirth();
+                String placeOfBirth = promptPlaceOfBirth();
+                BiologicalSex sex = promptBiologicalSex();
+                String fullName = promptFullName();
+                String address = promptAddress();
+                DigitalId id = central.createIdentity(dob, placeOfBirth, sex, fullName, address);
+                out.println("Created: " + id);
+            }),
+            new PortalCommand("lookup", "Look up an identity",
+                () -> out.println(central.lookupIdentity(promptDigitalId()))),
+            new PortalCommand("update-name", "Update an identity's full name", () -> {
+                UUID id = promptDigitalId();
+                String name = prompt("New full name: ");
+                out.println(central.updateIdentityFullName(id, name));
+            }),
+            new PortalCommand("update-address", "Update an identity's address", () -> {
+                UUID id = promptDigitalId();
+                String address = prompt("New address: ");
+                out.println(central.updateIdentityAddress(id, address));
+            }),
+            new PortalCommand("suspend", "Suspend an identity",
+                () -> out.println(central.suspendIdentity(promptDigitalId()))),
+            new PortalCommand("reinstate", "Reinstate a suspended identity",
+                () -> out.println(central.reinstateIdentity(promptDigitalId()))),
+            new PortalCommand("revoke", "Permanently revoke an identity",
+                () -> out.println(central.revokeIdentity(promptDigitalId())))
+        );
     }
 
-    private void taxLoop() {
-        String help = "commands: verify-current, verify-year, back";
-        out.println("[tax-authority] " + help);
-        while (true) {
-            String cmd = prompt("tax> ");
-            try {
-                switch (cmd) {
-                    case "" -> {
-                    }
-                    case "help" -> out.println(help);
-                    case "back" -> {
-                        return;
-                    }
-                    case "verify-current" -> out.println(
-                        "Verified: " + tax.verifyIdentityForCurrentTaxYear(promptDigitalId()));
-                    case "verify-year" -> {
-                        UUID id = promptDigitalId();
-                        int year = Integer.parseInt(prompt("Tax year start year (e.g. 2025): "));
-                        out.println("Verified: " + tax.verifyIdentityForTaxYear(id, year));
-                    }
-                    default -> out.println("Unknown. " + help);
-                }
-            } catch (Exception e) {
-                reportError(e);
-            }
-        }
+    private @NotNull List<PortalCommand> taxCommands() {
+        return List.of(
+            new PortalCommand("verify-current", "Verify identity for the current tax year",
+                () -> out.println("Verified: " + tax.verifyIdentityForCurrentTaxYear(promptDigitalId()))),
+            new PortalCommand("verify-year", "Verify identity for a specific tax year", () -> {
+                UUID id = promptDigitalId();
+                int year = Integer.parseInt(prompt("Tax year start year (e.g. 2025): "));
+                out.println("Verified: " + tax.verifyIdentityForTaxYear(id, year));
+            })
+        );
     }
 
-    private void dvlaLoop() {
-        String help = "commands: check-provisional, check-full, back";
-        out.println("[driving-licence-authority] " + help);
-        while (true) {
-            String cmd = prompt("dvla> ");
-            try {
-                switch (cmd) {
-                    case "" -> {
-                    }
-                    case "help" -> out.println(help);
-                    case "back" -> {
-                        return;
-                    }
-                    case "check-provisional" -> {
-                        LicenceEligibility result = dvla.checkLicenceEligibility(promptDigitalId(),
-                            LicenceType.PROVISIONAL);
-                        out.println("Provisional: " + result);
-                    }
-                    case "check-full" -> {
-                        LicenceEligibility result = dvla.checkLicenceEligibility(promptDigitalId(), LicenceType.FULL);
-                        out.println("Full: " + result);
-                    }
-                    default -> out.println("Unknown. " + help);
-                }
-            } catch (Exception e) {
-                reportError(e);
-            }
-        }
+    private @NotNull List<PortalCommand> dvlaCommands() {
+        return List.of(
+            new PortalCommand("check-provisional", "Check eligibility for a provisional licence",
+                () -> out.println("Provisional: " +
+                    dvla.checkLicenceEligibility(promptDigitalId(), LicenceType.PROVISIONAL))),
+            new PortalCommand("check-full", "Check eligibility for a full licence",
+                () -> out.println("Full: " +
+                    dvla.checkLicenceEligibility(promptDigitalId(), LicenceType.FULL)))
+        );
     }
 
-    private void bankLoop() {
-        String help = "commands: verify-exists, verify-loan, back";
-        out.println("[bank] " + help);
-        while (true) {
-            String cmd = prompt("bank> ");
-            try {
-                switch (cmd) {
-                    case "" -> {
-                    }
-                    case "help" -> out.println(help);
-                    case "back" -> {
-                        return;
-                    }
-                    case "verify-exists" -> out.println(
-                        "Valid: " + bank.verifyIdentityExists(promptDigitalId()));
-                    case "verify-loan" -> out.println(
-                        "Eligible for loan: " + bank.verifyIdentityEligibleForLoan(promptDigitalId()));
-                    default -> out.println("Unknown. " + help);
-                }
-            } catch (Exception e) {
-                reportError(e);
-            }
-        }
+    private @NotNull List<PortalCommand> bankCommands() {
+        return List.of(
+            new PortalCommand("verify-exists", "Verify that an identity is currently valid",
+                () -> out.println("Valid: " + bank.verifyIdentityExists(promptDigitalId()))),
+            new PortalCommand("verify-loan", "Verify loan eligibility",
+                () -> out.println("Eligible for loan: " + bank.verifyIdentityEligibleForLoan(promptDigitalId())))
+        );
     }
 
-    private void healthLoop() {
-        String help = "commands: verify, verify-elderly, back";
-        out.println("[health-service] " + help);
-        while (true) {
-            String cmd = prompt("health> ");
-            try {
-                switch (cmd) {
-                    case "" -> {
-                    }
-                    case "help" -> out.println(help);
-                    case "back" -> {
-                        return;
-                    }
-                    case "verify" -> out.println("Valid: " + health.verifyIdentity(promptDigitalId()));
-                    case "verify-elderly" -> out.println("Eligible for elderly services: " +
-                        health.verifyIdentityEligibleForElderlyServices(promptDigitalId()));
-                    default -> out.println("Unknown. " + help);
-                }
-            } catch (Exception e) {
-                reportError(e);
-            }
-        }
+    private @NotNull List<PortalCommand> healthCommands() {
+        return List.of(
+            new PortalCommand("verify", "Verify that an identity is currently valid",
+                () -> out.println("Valid: " + health.verifyIdentity(promptDigitalId()))),
+            new PortalCommand("verify-elderly", "Check eligibility for elderly services",
+                () -> out.println("Eligible for elderly services: " +
+                    health.verifyIdentityEligibleForElderlyServices(promptDigitalId())))
+        );
     }
 
-    private void reportError(Exception e) {
-        if (e instanceof UnauthorizedOperationException || e instanceof IdentityNotFoundException ||
-            e instanceof InvalidStateTransitionException) {
-            out.println("Rejected: " + e.getMessage());
-        } else {
-            out.println("Error: " + e.getMessage());
-        }
-    }
-
-    private String prompt(@NotNull String label) {
-        out.print(label);
-        out.flush();
-        if (!scanner.hasNextLine()) {
-            return "exit";
-        }
-
-        return scanner.nextLine().trim();
+    private @NotNull String prompt(@NotNull String label) {
+        return shell.readLine(label);
     }
 
     private <T> T prompt(@NotNull String label, @NotNull Function<String, T> parser) {
