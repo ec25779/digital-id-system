@@ -1,0 +1,62 @@
+[
+  {
+    "id": "43cdea05-528d-46d0-86d6-bea6d46aca3e",
+    "createdAt": "2024-07-01T12:00:00Z",
+    "dateOfBirth": "1975-08-22",
+    "placeOfBirth": "Cardiff",
+    "biologicalSex": "FEMALE",
+    "fullName": "Eve Edwards",
+    "address": "12 Hill Top",
+    "status": "REVOKED"
+  },
+  {
+    "id": "d37e2fb3-480e-4dc3-8008-756c01521042",
+    "createdAt": "2025-06-20T12:00:00Z",
+    "dateOfBirth": "2010-06-15",
+    "placeOfBirth": "Manchester",
+    "biologicalSex": "MALE",
+    "fullName": "Bob Brown",
+    "address": "3 School Road",
+    "status": "ACTIVE"
+  },
+  {
+    "id": "69570b34-a790-40b7-b455-06d5c70c056c",
+    "createdAt": "2024-04-30T12:00:00Z",
+    "dateOfBirth": "1980-07-10",
+    "placeOfBirth": "Leeds",
+    "biologicalSex": "MALE",
+    "fullName": "David Davies",
+    "address": "9 River Way",
+    "status": "SUSPENDED"
+  },
+  {
+    "id": "4d5a6a7e-6f5d-4b4e-a659-a29e2e8e4494",
+    "createdAt": "2024-09-01T12:00:00Z",
+    "dateOfBirth": "1955-03-20",
+    "placeOfBirth": "Bristol",
+    "biologicalSex": "FEMALE",
+    "fullName": "Carol Clarke",
+    "address": "5 Park View",
+    "status": "ACTIVE"
+  },
+  {
+    "id": "925dc0f3-f42e-4aae-9847-d9aa8fbe1cb6",
+    "createdAt": "2024-05-10T12:00:00Z",
+    "dateOfBirth": "1985-05-01",
+    "placeOfBirth": "London",
+    "biologicalSex": "FEMALE",
+    "fullName": "Alice Adams-Brown",
+    "address": "2 New Lane",
+    "status": "ACTIVE"
+  },
+  {
+    "id": "8232363c-0408-45be-aade-ab810cdfbfc7",
+    "createdAt": "2024-04-10T12:00:00Z",
+    "dateOfBirth": "1990-01-01",
+    "placeOfBirth": "Glasgow",
+    "biologicalSex": "OTHER",
+    "fullName": "Frank Fisher",
+    "address": "7 Loch Side",
+    "status": "ACTIVE"
+  }
+]
