@@ -6,17 +6,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
-
-import java.util.function.Function;
 
 public class Cli {
 
     private final PrintWriter out;
     private final PortalShell shell;
+    private final PromptHelper promptHelper;
     private final CentralAuthorityPortal central;
     private final TaxAuthorityPortal tax;
     private final DrivingLicenceAuthorityPortal dvla;
@@ -28,6 +26,7 @@ public class Cli {
                @NotNull HealthServicePortal health) {
         this.out = out;
         this.shell = new PortalShell(scanner, out);
+        this.promptHelper = new PromptHelper(shell, out);
         this.central = central;
         this.tax = tax;
         this.dvla = dvla;
@@ -65,42 +64,42 @@ public class Cli {
     private @NotNull List<PortalCommand> centralCommands() {
         return List.of(
             new PortalCommand("create", "Create a new identity", () -> {
-                LocalDate dob = promptDateOfBirth();
-                String placeOfBirth = promptPlaceOfBirth();
-                BiologicalSex sex = promptBiologicalSex();
-                String fullName = promptFullName();
-                String address = promptAddress();
+                LocalDate dob = promptHelper.promptDateOfBirth();
+                String placeOfBirth = promptHelper.promptPlaceOfBirth();
+                BiologicalSex sex = promptHelper.promptBiologicalSex();
+                String fullName = promptHelper.promptFullName();
+                String address = promptHelper.promptAddress();
                 DigitalId id = central.createIdentity(dob, placeOfBirth, sex, fullName, address);
                 out.println("Created: " + id);
             }),
             new PortalCommand("lookup", "Look up an identity",
-                () -> out.println(central.lookupIdentity(promptDigitalId()))),
+                () -> out.println(central.lookupIdentity(promptHelper.promptDigitalId()))),
             new PortalCommand("update-name", "Update an identity's full name", () -> {
-                UUID id = promptDigitalId();
-                String name = prompt("New full name: ");
+                UUID id = promptHelper.promptDigitalId();
+                String name = promptHelper.prompt("New full name: ");
                 out.println(central.updateIdentityFullName(id, name));
             }),
             new PortalCommand("update-address", "Update an identity's address", () -> {
-                UUID id = promptDigitalId();
-                String address = prompt("New address: ");
+                UUID id = promptHelper.promptDigitalId();
+                String address = promptHelper.prompt("New address: ");
                 out.println(central.updateIdentityAddress(id, address));
             }),
             new PortalCommand("suspend", "Suspend an identity",
-                () -> out.println(central.suspendIdentity(promptDigitalId()))),
+                () -> out.println(central.suspendIdentity(promptHelper.promptDigitalId()))),
             new PortalCommand("reinstate", "Reinstate a suspended identity",
-                () -> out.println(central.reinstateIdentity(promptDigitalId()))),
+                () -> out.println(central.reinstateIdentity(promptHelper.promptDigitalId()))),
             new PortalCommand("revoke", "Permanently revoke an identity",
-                () -> out.println(central.revokeIdentity(promptDigitalId())))
+                () -> out.println(central.revokeIdentity(promptHelper.promptDigitalId())))
         );
     }
 
     private @NotNull List<PortalCommand> taxCommands() {
         return List.of(
             new PortalCommand("verify-current", "Verify identity for the current tax year",
-                () -> out.println("Verified: " + tax.verifyIdentityForCurrentTaxYear(promptDigitalId()))),
+                () -> out.println("Verified: " + tax.verifyIdentityForCurrentTaxYear(promptHelper.promptDigitalId()))),
             new PortalCommand("verify-year", "Verify identity for a specific tax year", () -> {
-                UUID id = promptDigitalId();
-                int year = Integer.parseInt(prompt("Tax year start year (e.g. 2025): "));
+                UUID id = promptHelper.promptDigitalId();
+                int year = Integer.parseInt(promptHelper.prompt("Tax year start year (e.g. 2025): "));
                 out.println("Verified: " + tax.verifyIdentityForTaxYear(id, year));
             })
         );
@@ -110,102 +109,30 @@ public class Cli {
         return List.of(
             new PortalCommand("check-provisional", "Check eligibility for a provisional licence",
                 () -> out.println("Provisional: " +
-                    dvla.checkLicenceEligibility(promptDigitalId(), LicenceType.PROVISIONAL))),
+                    dvla.checkLicenceEligibility(promptHelper.promptDigitalId(), LicenceType.PROVISIONAL))),
             new PortalCommand("check-full", "Check eligibility for a full licence",
                 () -> out.println("Full: " +
-                    dvla.checkLicenceEligibility(promptDigitalId(), LicenceType.FULL)))
+                    dvla.checkLicenceEligibility(promptHelper.promptDigitalId(), LicenceType.FULL)))
         );
     }
 
     private @NotNull List<PortalCommand> bankCommands() {
         return List.of(
             new PortalCommand("verify-exists", "Verify that an identity is currently valid",
-                () -> out.println("Valid: " + bank.verifyIdentityExists(promptDigitalId()))),
+                () -> out.println("Valid: " + bank.verifyIdentityExists(promptHelper.promptDigitalId()))),
             new PortalCommand("verify-loan", "Verify loan eligibility",
-                () -> out.println("Eligible for loan: " + bank.verifyIdentityEligibleForLoan(promptDigitalId())))
+                () -> out.println("Eligible for loan: " + bank.verifyIdentityEligibleForLoan(promptHelper.promptDigitalId())))
         );
     }
 
     private @NotNull List<PortalCommand> healthCommands() {
         return List.of(
             new PortalCommand("verify", "Verify that an identity is currently valid",
-                () -> out.println("Valid: " + health.verifyIdentity(promptDigitalId()))),
+                () -> out.println("Valid: " + health.verifyIdentity(promptHelper.promptDigitalId()))),
             new PortalCommand("verify-elderly", "Check eligibility for elderly services",
                 () -> out.println("Eligible for elderly services: " +
-                    health.verifyIdentityEligibleForElderlyServices(promptDigitalId())))
+                    health.verifyIdentityEligibleForElderlyServices(promptHelper.promptDigitalId())))
         );
-    }
-
-    private @NotNull String prompt(@NotNull String label) {
-        return shell.readLine(label);
-    }
-
-    private <T> T prompt(@NotNull String label, @NotNull Function<String, T> parser) {
-        while (true) {
-            String input = prompt(label);
-            try {
-                return parser.apply(input);
-            } catch (Exception e) {
-                out.println("Invalid input, try again.");
-                if (e instanceof IllegalArgumentException) {
-                    out.println("Error: " + e.getMessage());
-                }
-            }
-        }
-    }
-
-    private UUID promptUuid(@NotNull String label) {
-        return prompt(label, input -> {
-            try {
-                return UUID.fromString(input);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Invalid UUID format.");
-            }
-        });
-    }
-
-    private LocalDate promptDate(@NotNull String label) {
-        return prompt(label, input -> {
-            try {
-                return LocalDate.parse(input);
-            } catch (DateTimeParseException e) {
-                throw new IllegalArgumentException("Invalid date format, expected YYYY-MM-DD.");
-            }
-        });
-    }
-
-    private BiologicalSex promptSex(@NotNull String label) {
-        return prompt(label, input -> {
-            try {
-                return BiologicalSex.valueOf(input.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Invalid sex, expected male/female/other.");
-            }
-        });
-    }
-
-    private UUID promptDigitalId() {
-        return promptUuid("Enter Digital ID (UUID): ");
-    }
-
-    private @NotNull String promptAddress() {
-        return prompt("Enter address: ");
-    }
-
-    private @NotNull String promptFullName() {
-        return prompt("Enter full name: ");
-    }
-
-    private LocalDate promptDateOfBirth() {
-        return promptDate("Enter date of birth (YYYY-MM-DD): ");
-    }
-
-    private @NotNull String promptPlaceOfBirth() {
-        return prompt("Enter place of birth: ");
-    }
-
-    private BiologicalSex promptBiologicalSex() {
-        return promptSex("Enter biological sex: ");
     }
 
 }
